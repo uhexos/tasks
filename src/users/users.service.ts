@@ -6,7 +6,7 @@ import { User } from './user.entity';
 export class UsersService {
   constructor(private readonly orm: MikroORM) {}
 
-  async findOne(email: string): Promise<User | undefined> {
-    return this.orm.em.findOneOrFail(User, { email: email });
+  async findOne(username: string): Promise<User | undefined> {
+    return this.orm.em.findOneOrFail()
   }
 }
