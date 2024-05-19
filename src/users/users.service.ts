@@ -2,17 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
-export class RegisterUserDto {
-  email: string;
-  password: string;
-  fullName: string;
-}
-
-export class LoginUserDto {
-  email: string;
-  password: string;
-}
+import { RegisterUserDto } from './RegisterUserDto';
 
 @Injectable()
 export class UsersService {
