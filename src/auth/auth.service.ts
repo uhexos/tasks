@@ -8,9 +8,15 @@ export class AuthService {
 
   async signIn(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
-    if (user?.password !== pass) {
+    if (!user) {
       throw new UnauthorizedException();
     }
+
+    const isPasswordValid = await bcrypt.compare(pass, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException();
+    }
+
     const { password, ...result } = user;
     // TODO: Generate a JWT and return it here
     // instead of the user object

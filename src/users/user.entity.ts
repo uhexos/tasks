@@ -1,19 +1,19 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryKey()
-  id!: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Property()
-  fullName!: string;
+  @Column()
+  fullName: string;
 
-  @Property()
-  email!: string;
+  @Column()
+  email: string;
 
-  @Property()
-  password!: string;
+  @Column()
+  password: string;
 
-  @Property({ type: 'text' })
-  bio = '';
+  @Column({ default: true })
+  isActive: boolean;
 }
