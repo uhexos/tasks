@@ -5,18 +5,24 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { User } from 'src/users/user.entity';
+import { TaskGateway } from 'src/tasks/task.gateway';
 
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>,
+    private readonly taskGateway: TaskGateway,
   ) {}
 
   async create(user: User, createTaskDto: CreateTaskDto): Promise<Task> {
     const task = this.taskRepository.create(createTaskDto);
     task.user = user;
-    return this.taskRepository.save(task);
+
+    const savedTask = await this.taskRepository.save(task);
+    this.taskGateway.server.emit('taskCreated', savedTask);
+
+    return savedTask;
   }
 
   async findAll(): Promise<Task[]> {
@@ -35,7 +41,10 @@ export class TasksService {
     task.completed = updateTaskDto.completed;
     task.title = updateTaskDto.title;
     task.description = updateTaskDto.description;
-    return this.taskRepository.save(task);
+    const savedTask = await this.taskRepository.save(task);
+    this.taskGateway.server.emit('taskUpdated', savedTask);
+
+    return savedTask;
   }
 
   async remove(id: number): Promise<void> {
