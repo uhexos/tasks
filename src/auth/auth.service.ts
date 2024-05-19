@@ -1,7 +1,9 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import {
-  UsersService,
-} from '../users/users.service';
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { UsersService } from '../users/users.service';
 import { LoginUserDto } from 'src/users/LoginUserDto';
 import { RegisterUserDto } from 'src/users/RegisterUserDto';
 import * as bcrypt from 'bcrypt';
@@ -50,7 +52,8 @@ export class AuthService {
 
     const newUser = await this.usersService.create(userDetails);
 
-    const { password: _, ...result } = newUser;
+    const { ...result } = newUser;
+    delete result.password;
     return result;
   }
 }
