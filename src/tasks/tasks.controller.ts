@@ -24,22 +24,26 @@ export class TasksController {
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@Request() req) {
+    return this.tasksService.findAll(req.user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  findOne(@Request() req, @Param('id') id: string) {
+    return this.tasksService.findOne(req.user, +id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  update(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    return this.tasksService.update(req.user, +id, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  remove(@Request() req, @Param('id') id: string) {
+    return this.tasksService.remove(req.user, +id);
   }
 }
