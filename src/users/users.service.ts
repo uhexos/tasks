@@ -12,7 +12,7 @@ export class UsersService {
   ) {}
 
   async findByEmail(email: string): Promise<User | undefined> {
-    return this.usersRepository.findOne({ where: { email: email } });
+    return this.usersRepository.findOneOrFail({ where: { email: email } });
   }
 
   async create(createUserDto: RegisterUserDto): Promise<User> {
