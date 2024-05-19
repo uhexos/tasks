@@ -15,7 +15,7 @@ export class TasksService {
 
   async create(user: User, createTaskDto: CreateTaskDto): Promise<Task> {
     const task = this.taskRepository.create(createTaskDto);
-    task.user = user.id;
+    task.user = user;
     return this.taskRepository.save(task);
   }
 
@@ -32,7 +32,9 @@ export class TasksService {
     if (!task) {
       return null;
     }
-    Object.assign(task, updateTaskDto);
+    task.completed = updateTaskDto.completed;
+    task.title = updateTaskDto.title;
+    task.description = updateTaskDto.description;
     return this.taskRepository.save(task);
   }
 
